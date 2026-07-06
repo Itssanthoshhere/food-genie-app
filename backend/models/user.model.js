@@ -3,8 +3,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import mongoose from "mongoose";
-import { type } from "os";
-import { timeStamp } from "console";
+
 
 const UserSchema = new mongoose.Schema(
   {
@@ -71,6 +70,11 @@ UserSchema.pre("save", async function () {
 
   this.password = await bcrypt.hash(this.password, 12);
   this.passwordConfirm = undefined;
+
+  // Track when the password was changed (skip on first creation)
+  if (!this.isNew) {
+    this.passwordChangedAt = Date.now() - 1000;
+  }
 });
 
 // Password compare at login time

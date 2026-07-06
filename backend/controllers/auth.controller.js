@@ -19,8 +19,8 @@ export const signUp = catchAsyncErrors(async (req, res) => {
       url: "https://cdn-icons-png.flaticon.com/512/149/149071.png",
     };
   } else {
-    const result = await cloudinary.uploaderStream(req.body.avatar, {
-      folder: avatar,
+    const result = await cloudinary.v2.uploader.upload(req.body.avatar, {
+      folder: "avatars",
       width: 150,
       crop: "scale",
     });
@@ -40,5 +40,5 @@ export const signUp = catchAsyncErrors(async (req, res) => {
     avatar,
   });
 
-  sendToken(user, 200, res);
+  sendToken(user, 201, res);
 });

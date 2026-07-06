@@ -6,13 +6,14 @@ import APIFeatures from "../utils/apiFeatures.js";
 export const getAllRestaurants = catchAsyncErrors(async (req, res, next) => {
   const apiFeatures = new APIFeatures(Restaurant.find(), req.query)
     .search()
+    .filter(["ratings", "isVeg"])
     .sort();
 
   const restaurants = await apiFeatures.query;
   res.status(200).json({
     status: "Success",
     count: restaurants.length,
-    restaurant: restaurants,
+    restaurants: restaurants,
   });
 
   // /api/restaurants/keyword=kfc

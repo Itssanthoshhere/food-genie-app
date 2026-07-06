@@ -21,6 +21,8 @@ const restaurantSchema = new mongoose.Schema({
   ratings: {
     type: Number,
     default: 0,
+    min: [0, "Ratings must be at least 0"],
+    max: [5, "Ratings cannot exceed 5"],
   },
 
   numberOfReviews: {
@@ -38,6 +40,18 @@ const restaurantSchema = new mongoose.Schema({
     coordinates: {
       type: [Number],
       required: true,
+      validate: {
+        validator: function (val) {
+          return (
+            val.length === 2 &&
+            val[0] >= -180 &&
+            val[0] <= 180 &&
+            val[1] >= -90 &&
+            val[1] <= 90
+          );
+        },
+        message: "Coordinates must be a valid [longitude, latitude] array",
+      },
     },
   },
 
@@ -81,6 +95,6 @@ const restaurantSchema = new mongoose.Schema({
 });
 
 restaurantSchema.index({ location: "2dsphere" });
-restaurantSchema.index({ address: "text" });
+restaurantSchema.index({ name: "text" });
 
 export default mongoose.model("Restaurant", restaurantSchema);

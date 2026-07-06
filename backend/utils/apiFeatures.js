@@ -33,16 +33,21 @@ class APIFeatures {
     return this;
   }
 
-  filter() {
+  filter(allowedFields = []) {
     const queryCopy = { ...this.queryStr };
 
-    console.log(queryCopy);
-
     // Removing fields from the query
-    const removeFields = ["keyword", "limit", "page"];
+    const removeFields = ["keyword", "limit", "page", "sort"];
     removeFields.forEach((el) => delete queryCopy[el]);
 
-    console.log(queryCopy);
+    // Reject arbitrary query keys if allowedFields is provided
+    if (allowedFields.length > 0) {
+      Object.keys(queryCopy).forEach((key) => {
+        if (!allowedFields.includes(key)) {
+          delete queryCopy[key];
+        }
+      });
+    }
 
     // price: {gte: '1', 1te: '200'}}
 

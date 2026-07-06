@@ -1,6 +1,7 @@
 import User from "../models/user.model.js";
 import catchAsyncErrors from "../middlewares/catchAsyncErrors.js";
 import sendToken from "../utils/sendToken.js";
+import ErrorHandler from "../utils/errorHandler.js";
 import cloudinary from "cloudinary";
 
 // Sign up
